@@ -60,22 +60,25 @@ export const toPdfMakeObject = (md: string): Content[] => {
     };
   }
 
-  function buildMethod(htmlTagName: string): (element: Element) => Content {
+  function buildMethod(
+    htmlTagName: string
+  ): (element: Element) => Content | Content[] {
     const notFoundBuildMethod = () => [] as Content;
-    return (
-      {
-        P: buildParagraph,
-        UL: buildUnorderedList,
-        LI: buildListItem,
-        OL: buildOrderedList,
-        H1: buildH1,
-        H2: buildH2,
-        H3: buildH3,
-        H4: buildH4,
-        H5: buildH5,
-        H6: buildH6,
-      }[htmlTagName] || notFoundBuildMethod
-    );
+    const buildMethodMap: {
+      [key: string]: (element: Element) => Content | Content[];
+    } = {
+      P: buildParagraph,
+      UL: buildUnorderedList,
+      LI: buildListItem,
+      OL: buildOrderedList,
+      H1: buildH1,
+      H2: buildH2,
+      H3: buildH3,
+      H4: buildH4,
+      H5: buildH5,
+      H6: buildH6,
+    };
+    return buildMethodMap[htmlTagName] || notFoundBuildMethod;
   }
 
   function buildContent(element: Element): Content {

@@ -1,3 +1,11 @@
 language: node_js
 node_js:
   - 16.14.0
+
+branches:
+  only:
+    - master
+
+script:
+  - yarn
+  - yarn test --ci --coverage

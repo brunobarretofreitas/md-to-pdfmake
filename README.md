@@ -1,6 +1,7 @@
 # md-to-pdfmake
 
 [![Build Status](https://app.travis-ci.com/brunobarretofreitas/md-to-pdfmake.svg?branch=master)](https://app.travis-ci.com/brunobarretofreitas/md-to-pdfmake)
+[![Npm package version](https://badgen.net/npm/v/md-to-pdfmake)](https://npmjs.com/package/md-to-pdfmake)
 
 Parser of markdown text to [pdfmake](https://github.com/bpampuch/pdfmake) object.
 

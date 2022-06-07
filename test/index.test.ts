@@ -1,6 +1,6 @@
 import { toPdfMakeObject } from '../src';
 
-describe('blah', () => {
+describe('Transform objects', () => {
   it('should translate a markdown paragraph to text pdfmake object', () => {
     expect(toPdfMakeObject('Hello World')).toEqual([{ text: 'Hello World' }]);
   });
@@ -64,6 +64,35 @@ describe('blah', () => {
           {
             text: 'World',
           },
+        ],
+      },
+    ]);
+  });
+
+  it('should translate a strong text to a bold text object', () => {
+    expect(toPdfMakeObject('**Hello** World')).toEqual([
+      { text: [{ text: 'Hello', bold: true }, { text: ' World' }] },
+    ]);
+    expect(toPdfMakeObject('**Hello World**')).toEqual([
+      { text: [{ text: 'Hello World', bold: true }] },
+    ]);
+  });
+
+  it('should translate a italic text to a italics text object', () => {
+    expect(toPdfMakeObject('*Hello World*')).toEqual([
+      { text: [{ text: 'Hello World', italics: true }] },
+    ]);
+  });
+
+  it('should translate a bold italic text to a bold/italics text object', () => {
+    expect(toPdfMakeObject('***Hello World***')).toEqual([
+      { text: [{ text: 'Hello World', bold: true, italics: true }] },
+    ]);
+    expect(toPdfMakeObject('Testing ***Hello World***')).toEqual([
+      {
+        text: [
+          { text: 'Testing ' },
+          { text: 'Hello World', bold: true, italics: true },
         ],
       },
     ]);

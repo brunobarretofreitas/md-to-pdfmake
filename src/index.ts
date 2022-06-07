@@ -8,44 +8,75 @@ import {
 } from 'pdfmake/interfaces';
 
 export const toPdfMakeObject = (md: string): Content[] => {
-  function buildText(text: string, options = {}): ContentText {
-    return { text, ...options };
+  function buildText(text: string | null, options = {}): ContentText {
+    return { text: text || '', ...options };
+  }
+
+  function buildItalics(element: Element): ContentText {
+    if (element.childElementCount && element.children[0].tagName == 'STRONG') {
+      return buildText(element.textContent, {
+        bold: true,
+        italics: true,
+      });
+    }
+    return buildText(element.textContent, { italics: true });
+  }
+
+  function buildBold(element: Element): ContentText {
+    if (element.childElementCount && element.children[0].tagName == 'EM') {
+      return buildText(element.textContent, {
+        bold: true,
+        italics: true,
+      });
+    }
+    return buildText(element.textContent, { bold: true });
   }
 
   function buildParagraph(element: Element): ContentText | Content[] {
-    return buildText(element.textContent || '');
+    if (element.childElementCount) {
+      return {
+        text: Array.from(element.childNodes).map(element => {
+          if ((<Element>element).tagName === undefined) {
+            return buildText(element.textContent);
+          }
+
+          return buildContent(<Element>element);
+        }),
+      };
+    }
+    return buildText(element.textContent);
   }
 
   function buildH1(element: Element): ContentText {
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildH2(element: Element): ContentText {
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildH3(element: Element): ContentText {
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildH4(element: Element): ContentText {
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildH5(element: Element): ContentText {
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildH6(element: Element): ContentText {
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildListItem(element: Element): ContentText | Content[] {
-    if (Array.from(element.children).length) {
+    if (element.childElementCount) {
       return Array.from(element.children).map(child => buildContent(child));
     }
 
-    return buildText(element.textContent || '');
+    return buildText(element.textContent);
   }
 
   function buildUnorderedList(element: Element): ContentUnorderedList {
@@ -77,6 +108,8 @@ export const toPdfMakeObject = (md: string): Content[] => {
       H4: buildH4,
       H5: buildH5,
       H6: buildH6,
+      STRONG: buildBold,
+      EM: buildItalics,
     };
     return buildMethodMap[htmlTagName] || notFoundBuildMethod;
   }

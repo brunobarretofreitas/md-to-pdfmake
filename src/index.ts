@@ -1,4 +1,8 @@
+global.TextEncoder = require('util').TextEncoder;
+global.TextDecoder = require('util').TextDecoder;
+
 import marked from 'marked';
+import { JSDOM } from 'jsdom';
 
 import {
   Content,
@@ -123,9 +127,7 @@ export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
   }
 
   function htmlElements(): Element[] {
-    return Array.from(
-      new DOMParser().parseFromString(marked(md), 'text/html').body.children
-    );
+    return Array.from(new JSDOM(marked(md)).window.document.body.children);
   }
 
   return htmlElements().map(element => buildContent(element));

@@ -1,6 +1,19 @@
 {
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "MIT",
+  "keywords": [
+    "markdown",
+    "pdfmake"
+  ],
+  "homepage": "https://github.com/brunobarretofreitas/md-to-pdfmake",
+  "bugs": {
+    "url": "https://github.com/brunobarretofreitas/md-to-pdfmake/issues",
+    "email": "bruno.barrt@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com:brunobarretofreitas/md-to-pdfmake.git"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -46,6 +59,7 @@
   ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/jest": "^28.1.1",
     "@types/marked": "^2.0.5",
     "@types/pdfmake": "^0.1.21",
     "husky": "^8.0.1",

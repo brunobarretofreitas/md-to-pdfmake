@@ -6,8 +6,9 @@ import {
   ContentText,
   ContentUnorderedList,
 } from 'pdfmake/interfaces';
+import { Style } from './types';
 
-export const toPdfMakeObject = (md: string): Content[] => {
+export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
   function buildText(text: string | null, options = {}): ContentText {
     return { text: text || '', ...options };
   }
@@ -42,33 +43,34 @@ export const toPdfMakeObject = (md: string): Content[] => {
 
           return buildContent(<Element>element);
         }),
+        ...(style.p || {}),
       };
     }
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.p || {});
   }
 
   function buildH1(element: Element): ContentText {
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.h1 || {});
   }
 
   function buildH2(element: Element): ContentText {
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.h2 || {});
   }
 
   function buildH3(element: Element): ContentText {
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.h3 || {});
   }
 
   function buildH4(element: Element): ContentText {
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.h4 || {});
   }
 
   function buildH5(element: Element): ContentText {
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.h5 || {});
   }
 
   function buildH6(element: Element): ContentText {
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.h6 || {});
   }
 
   function buildListItem(element: Element): ContentText | Content[] {
@@ -76,18 +78,20 @@ export const toPdfMakeObject = (md: string): Content[] => {
       return Array.from(element.children).map(child => buildContent(child));
     }
 
-    return buildText(element.textContent);
+    return buildText(element.textContent, style.li || {});
   }
 
   function buildUnorderedList(element: Element): ContentUnorderedList {
     return {
       ul: Array.from(element.children).map(child => buildContent(child)),
+      ...style.ul,
     };
   }
 
   function buildOrderedList(element: Element): ContentOrderedList {
     return {
       ol: Array.from(element.children).map(child => buildContent(child)),
+      ...style.ol,
     };
   }
 

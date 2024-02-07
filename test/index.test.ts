@@ -1,6 +1,18 @@
 import { toPdfMakeObject } from '../src';
 
 describe('Transform objects', () => {
+  it('should translate a markdown anchor to text with link pdfmake object', () => {
+    expect(toPdfMakeObject('Hello [Google](https://google.com/)!')).toEqual([
+      {
+        text: [
+          { text: 'Hello ' },
+          { text: 'Google', link: 'https://google.com/' },
+          { text: '!' },
+        ],
+      },
+    ]);
+  });
+
   it('should translate a markdown paragraph to text pdfmake object', () => {
     expect(toPdfMakeObject('Hello World')).toEqual([{ text: 'Hello World' }]);
   });

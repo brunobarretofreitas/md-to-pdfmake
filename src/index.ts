@@ -37,6 +37,12 @@ export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
     return buildText(element.textContent, { bold: true });
   }
 
+  function buildAnchor(element: Element): ContentText {
+    return buildText(element.textContent, {
+      link: (<HTMLAnchorElement>element).href,
+    });
+  }
+
   function buildParagraph(element: Element): ContentText | Content[] {
     if (element.childElementCount) {
       return {
@@ -106,6 +112,7 @@ export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
     const buildMethodMap: {
       [key: string]: (element: Element) => Content | Content[];
     } = {
+      A: buildAnchor,
       P: buildParagraph,
       UL: buildUnorderedList,
       LI: buildListItem,

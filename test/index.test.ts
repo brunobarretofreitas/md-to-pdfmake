@@ -2,15 +2,62 @@ import { toPdfMakeObject } from '../src';
 
 describe('Transform objects', () => {
   it('should translate a markdown anchor to text with link pdfmake object', () => {
-    expect(toPdfMakeObject('Hello [Google](https://google.com/)!')).toEqual([
+    expect(toPdfMakeObject('Hello [Google](https://google.com/)!', {
+      a: {
+        fontSize: 12
+      },
+      p: {
+        fontSize: 16
+      }
+    })).toEqual([
       {
         text: [
           { text: 'Hello ' },
-          { text: 'Google', link: 'https://google.com/' },
+          { text: 'Google', link: 'https://google.com/', fontSize: 12 },
           { text: '!' },
         ],
+        fontSize: 16
       },
     ]);
+  });
+
+  it('should translate a markdown anchor with to text bold and fontSize 16 with link pdfmake object', () => {
+    expect(
+      toPdfMakeObject('**Hello [Google](https://google.com/)!**', {
+        a: {
+          fontSize: 14,
+        },
+        p: {
+          fontSize: 16,
+        },
+      })
+    ).toEqual(
+      [
+        {
+          fontSize: 16,
+          text: [
+            {
+              text: [
+                {
+                  text: "Hello ",
+                  bold: true,
+                },
+                {
+                  text: "Google",
+                  bold: true,
+                  link: "https://google.com/",
+                  fontSize: 14,
+                },
+                {
+                  text: "!",
+                  bold: true,
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
   });
 
   it('should translate a markdown paragraph to text pdfmake object', () => {
@@ -97,17 +144,43 @@ describe('Transform objects', () => {
   });
 
   it('should translate a bold italic text to a bold/italics text object', () => {
-    expect(toPdfMakeObject('***Hello World***')).toEqual([
-      { text: [{ text: 'Hello World', bold: true, italics: true }] },
-    ]);
-    expect(toPdfMakeObject('Testing ***Hello World***')).toEqual([
-      {
-        text: [
-          { text: 'Testing ' },
-          { text: 'Hello World', bold: true, italics: true },
-        ],
-      },
-    ]);
+    expect(toPdfMakeObject('***Hello World***')).toEqual(
+      [
+        {
+          text: [
+            {
+              text: [
+                {
+                  text: 'Hello World',
+                  bold: true,
+                  italics: true,
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+    expect(toPdfMakeObject('Testing ***Hello World***')).toEqual(
+      [
+        {
+          text: [
+            {
+              text: "Testing "
+            },
+            {
+              text: [
+                {
+                  text: 'Hello World',
+                  bold: true,
+                  italics: true,
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
   });
 
   it('should translate the style options to pdfmake object', () => {
@@ -118,20 +191,54 @@ describe('Transform objects', () => {
     // Bold Paragraph
     expect(
       toPdfMakeObject('**Hello World**', { p: { fontSize: 10 } })
-    ).toEqual([{ text: [{ text: 'Hello World', bold: true }], fontSize: 10 }]);
+    ).toEqual(
+      [
+        {
+          text: [
+            {
+              text: 'Hello World',
+              bold: true,
+            },
+          ],
+          fontSize: 10,
+        }
+      ]
+    );
     // Italic Paragraph
-    expect(toPdfMakeObject('*Hello World*', { p: { fontSize: 10 } })).toEqual([
-      { text: [{ text: 'Hello World', italics: true }], fontSize: 10 },
-    ]);
+    expect(toPdfMakeObject('*Hello World*', { p: { fontSize: 10 } })).toEqual(
+      [
+        {
+          text: [
+            {
+              text: 'Hello World',
+              italics: true,
+            },
+          ],
+          fontSize: 10,
+        }
+      ]
+    );
     // Bold/Italic Paragraph
     expect(
       toPdfMakeObject('***Hello World***', { p: { fontSize: 10 } })
-    ).toEqual([
-      {
-        text: [{ text: 'Hello World', italics: true, bold: true }],
-        fontSize: 10,
-      },
-    ]);
+    ).toEqual(
+      [
+        {
+          text: [
+            {
+              text: [
+                {
+                  text: 'Hello World',
+                  bold: true,
+                  italics: true
+                }
+              ]
+            }
+          ],
+          fontSize: 10
+        }
+      ]
+    );
     // H1
     expect(toPdfMakeObject('# Hello World', { h1: { fontSize: 20 } })).toEqual([
       {

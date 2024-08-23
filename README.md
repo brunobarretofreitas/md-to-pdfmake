@@ -1,7 +1,7 @@
 # md-to-pdfmake
 
 [![Build Status](https://app.travis-ci.com/brunobarretofreitas/md-to-pdfmake.svg?branch=master)](https://app.travis-ci.com/brunobarretofreitas/md-to-pdfmake)
-[![Npm package version](https://badgen.net/npm/v/md-to-pdfmake)](https://npmjs.com/package/md-to-pdfmake)
+[![npm version](https://img.shields.io/npm/v/md-to-pdfmake)](https://www.npmjs.com/package/md-to-pdfmake)
 
 Parser of markdown text to [pdfmake](https://github.com/bpampuch/pdfmake) object.
 
@@ -64,6 +64,7 @@ You can also define the optional style properties provided by pdfmake for each p
 
 | **Element**           | **Available Properties**                       |
 | --------------------- | ---------------------------------------------- |
+| **a**                 | fontSize, lineHeight, characterSpacing, margin |
 | **p**                 | fontSize, lineHeight, characterSpacing, margin |
 | **h1,h2,h3,h4,h5,h6** | fontSize, lineHeight, characterSpacing, margin |
 | **li**                | fontSize, lineHeight, characterSpacing, margin |
@@ -83,7 +84,7 @@ const parsedObject = toPdfMakeObject(markdownText, {
 ```
 
 ## Supported elements
-
+- Anchor
 - Paragraph
 - Ordered List
 - Unordered List

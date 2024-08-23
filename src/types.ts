@@ -11,6 +11,7 @@ export interface FontStyle {
 }
 
 export interface Style {
+  a?: FontStyle,
   h1?: FontStyle,
   h2?: FontStyle,
   h3?: FontStyle,

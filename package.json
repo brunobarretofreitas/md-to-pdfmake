@@ -1,5 +1,5 @@
 {
-  "version": "0.2.1",
+  "version": "0.3.1",
   "license": "MIT",
   "keywords": [
     "markdown",
@@ -45,6 +45,7 @@
     "trailingComma": "es5"
   },
   "name": "md-to-pdfmake",
+  "description": "Parser of markdown text to pdfmake object",
   "author": "brunobarretofreitas",
   "module": "dist/md-to-pdfmake.esm.js",
   "size-limit": [

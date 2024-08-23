@@ -18,28 +18,79 @@ export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
   }
 
   function buildItalics(element: Element): ContentText {
-    if (element.childElementCount && element.children[0].tagName == 'STRONG') {
-      return buildText(element.textContent, {
-        bold: true,
-        italics: true,
-      });
+    if (element.childElementCount) {
+      const value = {
+        text: Array.from(element.childNodes).map(element => {
+          if ((<Element>element).tagName === undefined) {
+            return buildText(element.textContent, {
+              italics: true,
+            });
+          }
+
+          if ((<Element>element).tagName === 'A') {
+            return buildText(element.textContent, {
+              italics: true,
+              link: (<HTMLAnchorElement>element).href,
+              ...style.a,
+            });
+          }
+
+          if ((<Element>element).tagName === 'STRONG') {
+            return buildText(element.textContent, {
+              bold: true,
+              italics: true,
+            });
+          }
+
+          return buildContent(<Element>element);
+        }),
+      }
+
+      return value;
     }
+    
     return buildText(element.textContent, { italics: true });
   }
 
   function buildBold(element: Element): ContentText {
-    if (element.childElementCount && element.children[0].tagName == 'EM') {
-      return buildText(element.textContent, {
-        bold: true,
-        italics: true,
-      });
+    if (element.childElementCount) {
+      const value = {
+        text: Array.from(element.childNodes).map(element => {
+          if ((<Element>element).tagName === undefined) {
+            return buildText(element.textContent, {
+              bold: true,
+            });
+          }
+
+          if ((<Element>element).tagName === 'A') {
+            return buildText(element.textContent, {
+              bold: true,
+              link: (<HTMLAnchorElement>element).href,
+              ...style.a,
+            });
+          }
+
+          if ((<Element>element).tagName === 'EM') {
+            return buildText(element.textContent, {
+              bold: true,
+              italics: true,
+            });
+          }
+
+          return buildContent(<Element>element);
+        }),
+      }
+      
+      return value;
     }
+
     return buildText(element.textContent, { bold: true });
   }
 
   function buildAnchor(element: Element): ContentText {
     return buildText(element.textContent, {
       link: (<HTMLAnchorElement>element).href,
+      ...style.a
     });
   }
 
@@ -137,5 +188,6 @@ export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
     return Array.from(new JSDOM(marked(md)).window.document.body.children);
   }
 
-  return htmlElements().map(element => buildContent(element));
+  const returnContent = htmlElements().map(element => buildContent(element));
+  return returnContent;
 };

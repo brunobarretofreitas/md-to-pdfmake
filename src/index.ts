@@ -185,7 +185,7 @@ export const toPdfMakeObject = (md: string, style: Style = {}): Content[] => {
   }
 
   function htmlElements(): Element[] {
-    return Array.from(new JSDOM(marked(md)).window.document.body.children);
+    return Array.from(new JSDOM(marked.parse(md)).window.document.body.children);
   }
 
   const returnContent = htmlElements().map(element => buildContent(element));

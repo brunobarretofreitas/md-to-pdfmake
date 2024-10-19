@@ -72,6 +72,6 @@
   },
   "dependencies": {
     "jsdom": "^19.0.0",
-    "marked": "^2.1.0"
+    "marked": "^4.0.10"
   }
 }
